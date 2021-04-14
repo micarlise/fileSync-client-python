@@ -4,6 +4,7 @@ __version__ = '0.1.0'
 
 import requests
 import hashlib
+import os
 
 SITE = 'http://localhost:3000/block/'
 
@@ -25,4 +26,17 @@ def send_file(fn):
         post_block(block_id, f)
 
 if __name__ == '__main__':
-    send_file('testfile')
+
+    paths = ['tests/fixtures']
+    while paths:
+        current_path = paths.pop()
+
+        with os.scandir(current_path) as dir:
+            for entry in dir:
+                if entry.name.startswith('.'):
+                    continue
+
+                if entry.is_dir():
+                    paths.append(current_path + '/' + entry.name)
+                elif entry.is_file():
+                    send_file(current_path + '/' + entry.name)
