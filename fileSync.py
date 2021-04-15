@@ -2,6 +2,7 @@
 
 __version__ = '0.1.0'
 
+import argparse
 import requests
 import hashlib
 import os
@@ -27,7 +28,13 @@ def send_file(fn):
 
 if __name__ == '__main__':
 
-    paths = ['tests/fixtures']
+    cli = argparse.ArgumentParser(prog='fileSync',
+                    description='Sync the content of a folder')
+
+    cli.add_argument('path', type=str, help='path to folder')
+    args = cli.parse_args()
+
+    paths = [args.path]
     while paths:
         current_path = paths.pop()
 
